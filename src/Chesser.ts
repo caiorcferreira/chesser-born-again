@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import {
   App,
-  EditorPosition,
+  EditorPosition, FileSystemAdapter,
   MarkdownPostProcessorContext,
   MarkdownRenderChild,
   MarkdownView,
@@ -9,6 +9,7 @@ import {
   parseYaml,
   stringifyYaml,
 } from "obsidian";
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from 'fs';
 import { Chess, ChessInstance, Move, Square } from "chess.js";
 import { Chessground } from "chessground";
 import { Api } from "chessground/api";
@@ -67,19 +68,6 @@ export function draw_chessboard(app: App, settings: ChesserSettings) {
   };
 }
 
-function read_state(id: string) {
-  const savedDataStr = localStorage.getItem(`chesser-${id}`);
-  try {
-    return JSON.parse(savedDataStr);
-  } catch (e) {
-    console.error(e);
-  }
-  return {};
-}
-
-function write_state(id: string, game_state: ChesserConfig) {
-  localStorage.setItem(`chesser-${id}`, JSON.stringify(game_state));
-}
 
 export class Chesser extends MarkdownRenderChild {
   private ctx: MarkdownPostProcessorContext;
@@ -102,12 +90,14 @@ export class Chesser extends MarkdownRenderChild {
   ) {
     super(containerEl);
 
+    console.debug("starting chesser");
+
     this.app = app;
     this.ctx = ctx;
     this.id = user_config.id ?? nanoid(8);
     this.chess = new Chess();
 
-    const saved_config = read_state(this.id);
+    const saved_config = this.read_state(this.id, true);
     const config = Object.assign({}, user_config, saved_config);
 
     this.sync_board_with_gamestate = this.sync_board_with_gamestate.bind(this);
@@ -121,6 +111,8 @@ export class Chesser extends MarkdownRenderChild {
           this.write_config({ id: this.id });
         });
       });
+
+      user_config.id = this.id;
     }
 
     if (config.pgn) {
@@ -231,19 +223,80 @@ export class Chesser extends MarkdownRenderChild {
     }
   }
 
+  private read_state(id: string, skipCache: boolean = false) {
+    let stateData = "";
+
+    const dataFile = this.persistent_data_file(id);
+
+    if (skipCache && existsSync(dataFile)) {
+      stateData = readFileSync(dataFile, 'utf-8');
+    } else {
+      stateData = localStorage.getItem(`chesser-${id}`);
+    }
+
+    try {
+      return JSON.parse(stateData);
+    } catch (e) {
+      console.error(e);
+    }
+
+    return {};
+  }
+
+  private write_state(id: string, game_state: ChesserConfig) {
+    localStorage.setItem(`chesser-${id}`, JSON.stringify(game_state));
+
+    this.persist_state(id, game_state);
+  }
+
+  private persist_state(id: string, state: ChesserConfig) {
+    // const vaultPath = vaultAbsolutePath(this.app);
+    // const dataDir = `${vaultPath}/${this.app.vault.configDir}/plugins/chesser-born-again/data`
+    //
+    // this.ensureDir(dataDir);
+    //
+    // const path = `${dataDir}/${id}.json`;
+
+    const path = this.persistent_data_file(id);
+
+    console.debug("writing state to", path);
+
+    writeFileSync(path, JSON.stringify(state));
+  }
+
+  private persistent_data_file(id: string): string {
+    const vaultPath = vaultAbsolutePath(this.app);
+    const dataDir = `${vaultPath}/${this.app.vault.configDir}/plugins/chesser-born-again/data`
+
+    this.ensureDir(dataDir);
+
+    return `${dataDir}/${id}.json`;
+  }
+
+  private ensureDir(path: string) {
+    if (existsSync(path)) {
+      return
+    }
+
+    mkdirSync(path);
+  }
+
   private save_move() {
-    const config = read_state(this.id);
-    write_state(this.id, {
+    console.debug("saving move");
+
+    const config = this.read_state(this.id);
+    this.write_state(this.id, {
       ...config,
       currentMoveIdx: this.currentMoveIdx,
       moves: this.moves,
       pgn: this.chess.pgn(),
+      free: this.cg.state.movable.free,
     });
   }
 
   private save_shapes(shapes: DrawShape[]) {
-    const config = read_state(this.id);
-    write_state(this.id, {
+    const config = this.read_state(this.id);
+    this.write_state(this.id, {
       ...config,
       shapes,
     });
@@ -254,13 +307,14 @@ export class Chesser extends MarkdownRenderChild {
       check: this.check(),
       turnColor: this.color_turn(),
       movable: {
-        free: false,
+        // free: false,
         color: this.color_turn(),
         dests: this.dests(),
       },
     });
 
     this.menu?.redrawMoveList();
+
     if (shouldSave) {
       this.save_move();
     }
@@ -328,6 +382,8 @@ export class Chesser extends MarkdownRenderChild {
   }
 
   public setFreeMove(enabled: boolean): void {
+    console.debug("set free move", enabled);
+
     if (enabled) {
       this.cg.set({
         events: {
@@ -339,6 +395,8 @@ export class Chesser extends MarkdownRenderChild {
           dests: undefined,
         },
       });
+
+      this.save_move();
     } else {
       this.cg.set({
         events: {
@@ -349,7 +407,11 @@ export class Chesser extends MarkdownRenderChild {
             this.sync_board_with_gamestate();
           },
         },
+        movable: {
+          free: false,
+        },
       });
+
       this.sync_board_with_gamestate();
     }
   }
@@ -400,4 +462,13 @@ export class Chesser extends MarkdownRenderChild {
     this.cg.set({ fen: this.chess.fen(), lastMove });
     this.sync_board_with_gamestate();
   }
+}
+
+function vaultAbsolutePath(app: App) {
+  let adapter = app.vault.adapter;
+  if (adapter instanceof FileSystemAdapter) {
+    return adapter.getBasePath();
+  }
+
+  return "./";
 }

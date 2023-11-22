@@ -68,6 +68,7 @@ export default class ChesserMenu {
         new Setting(sectionEl).setName("Enable Free Move?").addToggle((toggle) => {
           toggle.setValue(this.chesser.getBoardState().movable.free);
           toggle.onChange((value) => {
+            console.debug("free move toggle changed", value);
             this.chesser.setFreeMove(value);
           });
         });
