@@ -2,13 +2,15 @@ import { parseYaml } from "obsidian";
 
 import { ChesserSettings } from "./ChesserSettings";
 
+import { Move } from "chess.js";
+
 export interface ChesserConfig extends ChesserSettings {
   id?: string;
   fen: string;
   pgn?: string;
   shapes?: any;
   currentMoveIdx?: number;
-  moves?: string[];
+  moves?: Move[];
 }
 
 const ORIENTATIONS = ["white", "black"];
