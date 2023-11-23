@@ -1,12 +1,17 @@
 .cg-wrap {
-  width: 400px;
-  height: 400px;
+  width: 280px;
+  height: 280px;
+}
+
+.cg-wrap.cg-wrap.cg-wrap piece {
+  width: 10%;
+  height: 10%;
 }
 
 .chesser-container {
-  display: flex;
-  align-items: flex-start;
-  height: 400px;
+  /*display: flex;*/
+  /*align-items: flex-start;*/
+  height: 280px;
   width: 100%;
 }
 
@@ -15,7 +20,7 @@
   flex-direction: column;
   height: 100%;
   margin-left: 24px;
-  width: calc(100% - 424px);
+  width: calc(100% - 296px);
 }
 
 .chess-toolbar-container {
@@ -29,9 +34,12 @@
   margin: 8px 0;
 }
 
-/* temporary */
-.cg-wrap coords {
-  opacity: 0 !important;
+.cg-wrap coords.ranks {
+  transform: translate(-3px, 10px);
+}
+
+.cg-wrap coords.files {
+  transform: translate(-12px, 0px);
 }
 
 .chess-move-list {
