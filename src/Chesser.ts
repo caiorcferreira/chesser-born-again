@@ -61,10 +61,10 @@ import "../assets/board-css/ic.css";
 
 export function draw_chessboard(app: App, settings: ChesserSettings) {
   return async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
-    let user_config = parse_user_config(settings, source);
-    const chesser = new Chesser(el, ctx, user_config, app);
+    let global_settings = parse_user_config(settings, source);
+    const chesser = new Chesser(el, ctx, global_settings, app);
 
-    await chesser.init(el, user_config);
+    await chesser.init(el, global_settings);
 
     ctx.addChild(chesser);
   };
@@ -102,21 +102,21 @@ export class Chesser extends MarkdownRenderChild {
     this.save_shapes = this.save_shapes.bind(this);
   }
 
-  public async init(containerEl: HTMLElement, user_config: ChesserConfig) {
+  public async init(containerEl: HTMLElement, global_settings: ChesserConfig) {
     const saved_config = await this.read_state(this.id, true);
-    const config = Object.assign({}, user_config, saved_config);
+    await this.write_state(this.id, saved_config); // populate cache
 
-    await this.write_state(this.id, config);
+    const config = Object.assign({}, global_settings, saved_config);
 
     // Save `id` into the codeblock yaml
-    if (user_config.id === undefined) {
+    if (config.id === undefined) {
       this.app.workspace.onLayoutReady(() => {
         window.setTimeout(() => {
           this.write_config({ id: this.id });
         }, 0);
       });
 
-      user_config.id = this.id;
+      config.id = this.id;
     }
 
     if (config.pgn) {

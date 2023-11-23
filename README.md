@@ -18,7 +18,7 @@ You can declare various settings **inside** the `chess` code block, like a [FEN]
 
 ## Settings
 
-Here are the available settings for a `chesr` code block:
+Here are the available settings for a `chess` code block:
 
 | Name          | Possible Values                                              | Description                                                  |
 | ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
