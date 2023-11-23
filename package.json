@@ -1,6 +1,6 @@
 {
   "name": "chesser-born-again",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An improved chess game viewer/editor based on Chesser with persisted game history and mobile support",
   "main": "main.js",
   "scripts": {
