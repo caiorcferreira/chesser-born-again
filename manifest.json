@@ -1,7 +1,7 @@
 {
 	"id": "chesser-born-again",
 	"name": "Chesser Born Again",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"minAppVersion": "1.4.16",
 	"description": "An improved chess game viewer/editor based on Chesser with persisted game history and mobile support",
 	"author": "caiorcferreira",
