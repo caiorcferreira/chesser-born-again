@@ -4,13 +4,13 @@ An improved chess game viewer/editor for [Obsidian](https://obsidian.md/) based 
 
 ## Demonstration
 
-![chesser_demo](https://raw.githubusercontent.com/SilentVoid13/Chesser/master/imgs/chesser_demo.gif)
+![demo](https://raw.githubusercontent.com/caiorcferreira/chesser-born-again/master/imgs/demo.gif)
 
 ## Usage
 
-To use [Chesser](https://github.com/SilentVoid13/Chesser), you first need to declare a `chess` code block like so:
+To use [Chesser Born Again](https://github.com/caiorcferrera/chesser-born-again), you first need to declare a `chess` code block like so:
 
-![chesser_block](imgs/chesser_block.png)
+![block](imgs/block.png)
 
 This will create a basic chess board in the start position.
 
@@ -30,7 +30,7 @@ Here are the available settings for a `chess` code block:
 | `viewOnly`    | `true`/`false`                                               | If enabled, displays a static chess board (no moves, annotations, ...). |
 | `free`        | `true`/`false`                                               | If enabled, disables the chess logic, all moves are valid.   |
 
-You can permanently set some settings in [Chesser](https://github.com/SilentVoid13/Chesser)'s obsidian plugin settings.
+You can permanently set some settings in [Chesser Board Again](https://github.com/caiorcferreira/chesser-born-again)'s obsidian plugin settings.
 
 ## TODO
 
@@ -38,12 +38,13 @@ You can permanently set some settings in [Chesser](https://github.com/SilentVoid
 
 ## Installation
 
-After disabling Safe Mode, you can find third-party plugins in Settings > Community plugins > Browse > Search for "Chesser".
+After disabling Safe Mode, you can find third-party plugins in Settings > Community plugins > Browse > Search for "Chesser Born Again".
 
 After installing, you can then find the installed plugins under Settings > Community plugins. They need to be enabled in order to take effect. You can also uninstall them there.
 
 ## Alternatives
 
+- [SilentVoid13/Chesser](https://github.com/SilentVoid13/Chesser)
 - [THeK3nger/obsidian-chessboard](https://github.com/THeK3nger/obsidian-chessboard)
 
 ## Contributing
@@ -56,8 +57,5 @@ You can make a [pull request](https://github.com/SilentVoid13/Chesser/pulls) to 
 
 ## License
 
-[Chesser](https://github.com/SilentVoid13/Chesser) is licensed under the GNU AGPLv3 license. Refer to [LICENSE](https://github.com/SilentVoid13/Chesser/blob/master/LICENSE.TXT) for more informations.
+[Chesser Born Again](https://github.com/caiorcferrera/chesser-born-again) is licensed under the GNU AGPLv3 license. Refer to [LICENSE](https://github.com/SilentVoid13/Chesser/blob/master/LICENSE.TXT) for more informations.
 
-## Support
-
-If you want to support me and my work, you can donate me a little something by clicking [**here**](https://www.paypal.com/donate?hosted_button_id=U2SRGAFYXT32Q).
