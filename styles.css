@@ -4,21 +4,23 @@
 }
 
 .cg-wrap.cg-wrap.cg-wrap piece {
-  width: 10%;
-  height: 10%;
+  width: 11.5%;
+  height: 11.5%;
 }
 
 .chesser-container {
-  height: 280px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  height: 580px;
   width: 100%;
 }
 
 .chess-menu-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  margin-left: 24px;
-  width: calc(100% - 296px);
+  height: 50%;
+  font-size: 12px;
 }
 
 .cg-wrap coords.ranks {
@@ -29,41 +31,16 @@
   transform: translate(-12px, 0px);
 }
 
-@media (min-width: 1220px) {
-  .cg-wrap {
-    width: 400px;
-    height: 400px;
-  }
-
-  .cg-wrap coords.files {
-    transform: translate(-3px, 1px);
-  }
-
-  .cg-wrap.cg-wrap.cg-wrap piece {
-    width: 12.5%;
-    height: 12.5%;
-  }
-
-  .chesser-container {
-    display: flex;
-    align-items: flex-start;
-    height: 400px;
-    width: 100%;
-  }
-
-  .chess-menu-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    margin-left: 24px;
-    width: calc(100% - 424px);
-  }
-}
-
 .chess-toolbar-container {
   border-top: 1px solid var(--background-modifier-border);
   margin-top: auto;
   padding-top: 8px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.chess-toolbar-container .view-action {
+  padding: 0 2px;
 }
 
 .chess-turn-text {
@@ -105,7 +82,39 @@
   margin-top: 8px;
   margin-bottom: 12px;
   width: 100%;
+  font-size: 12px;
 }
+
+@media (min-width: 1220px) {
+  .cg-wrap {
+    width: 400px;
+    height: 400px;
+  }
+
+  .cg-wrap coords.files {
+    transform: translate(-3px, 1px);
+  }
+
+  .cg-wrap.cg-wrap.cg-wrap piece {
+    width: 12.5%;
+    height: 12.5%;
+  }
+
+  .chesser-container {
+    flex-direction: row;
+    height: 400px;
+    width: 100%;
+  }
+
+  .chess-menu-container {
+    display: flex;
+    height: 100%;
+    margin-left: 24px;
+    width: calc(100% - 424px);
+    font-size: 18px;
+  }
+}
+
 .blue-board cg-board {
     background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4PSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIgogICAgIHZpZXdCb3g9IjAgMCA4IDgiIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyI+CjxnIGlkPSJhIj4KICA8ZyBpZD0iYiI+CiAgICA8ZyBpZD0iYyI+CiAgICAgIDxnIGlkPSJkIj4KICAgICAgICA8cmVjdCB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjZGVlM2U2IiBpZD0iZSIvPgogICAgICAgIDx1c2UgeD0iMSIgeT0iMSIgaHJlZj0iI2UiIHg6aHJlZj0iI2UiLz4KICAgICAgICA8cmVjdCB5PSIxIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSIjOGNhMmFkIiBpZD0iZiIvPgogICAgICAgIDx1c2UgeD0iMSIgeT0iLTEiIGhyZWY9IiNmIiB4OmhyZWY9IiNmIi8+CiAgICAgIDwvZz4KICAgICAgPHVzZSB4PSIyIiBocmVmPSIjZCIgeDpocmVmPSIjZCIvPgogICAgPC9nPgogICAgPHVzZSB4PSI0IiBocmVmPSIjYyIgeDpocmVmPSIjYyIvPgogIDwvZz4KICA8dXNlIHk9IjIiIGhyZWY9IiNiIiB4OmhyZWY9IiNiIi8+CjwvZz4KPHVzZSB5PSI0IiBocmVmPSIjYSIgeDpocmVmPSIjYSIvPgo8L3N2Zz4K');
 }
