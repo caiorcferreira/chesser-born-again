@@ -9,8 +9,6 @@
 }
 
 .chesser-container {
-  /*display: flex;*/
-  /*align-items: flex-start;*/
   height: 280px;
   width: 100%;
 }
@@ -23,6 +21,45 @@
   width: calc(100% - 296px);
 }
 
+.cg-wrap coords.ranks {
+  transform: translate(-3px, 10px);
+}
+
+.cg-wrap coords.files {
+  transform: translate(-12px, 0px);
+}
+
+@media (min-width: 1220px) {
+  .cg-wrap {
+    width: 400px;
+    height: 400px;
+  }
+
+  .cg-wrap coords.files {
+    transform: translate(-3px, 1px);
+  }
+
+  .cg-wrap.cg-wrap.cg-wrap piece {
+    width: 12.5%;
+    height: 12.5%;
+  }
+
+  .chesser-container {
+    display: flex;
+    align-items: flex-start;
+    height: 400px;
+    width: 100%;
+  }
+
+  .chess-menu-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-left: 24px;
+    width: calc(100% - 424px);
+  }
+}
+
 .chess-toolbar-container {
   border-top: 1px solid var(--background-modifier-border);
   margin-top: auto;
@@ -32,14 +69,6 @@
 .chess-turn-text {
   font-weight: 500;
   margin: 8px 0;
-}
-
-.cg-wrap coords.ranks {
-  transform: translate(-3px, 10px);
-}
-
-.cg-wrap coords.files {
-  transform: translate(-12px, 0px);
 }
 
 .chess-move-list {
