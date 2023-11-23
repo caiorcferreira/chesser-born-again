@@ -60,9 +60,13 @@ import "../assets/board-css/purple.css";
 import "../assets/board-css/ic.css";
 
 export function draw_chessboard(app: App, settings: ChesserSettings) {
-  return (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
+  return async (source: string, el: HTMLElement, ctx: MarkdownPostProcessorContext) => {
     let user_config = parse_user_config(settings, source);
-    ctx.addChild(new Chesser(el, ctx, user_config, app));
+    const chesser = new Chesser(el, ctx, user_config, app);
+
+    await chesser.init(el, user_config);
+
+    ctx.addChild(chesser);
   };
 }
 
@@ -88,19 +92,21 @@ export class Chesser extends MarkdownRenderChild {
   ) {
     super(containerEl);
 
-    console.debug("starting chesser");
-
     this.app = app;
     this.ctx = ctx;
     this.id = user_config.id ?? nanoid(8);
     this.chess = new Chess();
 
-    const saved_config = this.read_state(this.id, true);
-    const config = Object.assign({}, user_config, saved_config);
-
     this.sync_board_with_gamestate = this.sync_board_with_gamestate.bind(this);
     this.save_move = this.save_move.bind(this);
     this.save_shapes = this.save_shapes.bind(this);
+  }
+
+  public async init(containerEl: HTMLElement, user_config: ChesserConfig) {
+    const saved_config = await this.read_state(this.id, true);
+    const config = Object.assign({}, user_config, saved_config);
+
+    await this.write_state(this.id, config);
 
     // Save `id` into the codeblock yaml
     if (user_config.id === undefined) {
@@ -188,11 +194,11 @@ export class Chesser extends MarkdownRenderChild {
   private get_config(view: MarkdownView): ChesserConfig | undefined {
     const [from, to] = this.get_section_range();
     const codeblockText = view.editor.getRange(from, to);
+
     try {
       return parseYaml(codeblockText);
     } catch (e) {
       console.debug("failed to parse codeblock's yaml config", codeblockText)
-      // failed to parse. show error...
     }
 
     return undefined;
@@ -215,7 +221,6 @@ export class Chesser extends MarkdownRenderChild {
       const [from, to] = this.get_section_range();
       view.editor.replaceRange(updated, from, to);
     } catch (e) {
-      // failed to parse. show error...
       console.error("failed to write config", e);
     }
   }
@@ -227,8 +232,10 @@ export class Chesser extends MarkdownRenderChild {
     const hasStateDataFile = await this.app.vault.adapter.exists(dataFile);
 
     if (skipCache && hasStateDataFile) {
+      console.debug("reading state from disk");
       stateData = await this.app.vault.adapter.read(dataFile);
     } else {
+      console.debug("reading state from cache");
       stateData = localStorage.getItem(`chesser-${id}`);
     }
 
@@ -249,6 +256,8 @@ export class Chesser extends MarkdownRenderChild {
 
   private async persist_state(id: string, state: ChesserConfig) {
     const path = await this.persistent_data_file(id);
+
+    console.debug("persisting state at", path, state);
 
     return this.app.vault.adapter.write(path, JSON.stringify(state));
   }
@@ -271,6 +280,7 @@ export class Chesser extends MarkdownRenderChild {
   }
 
   private async save_move() {
+    console.debug("saving move")
     const config = await this.read_state(this.id);
 
     await this.write_state(this.id, {
@@ -283,6 +293,8 @@ export class Chesser extends MarkdownRenderChild {
   }
 
   private async save_shapes(shapes: DrawShape[]) {
+    console.debug("saving shape");
+
     const config = await this.read_state(this.id);
     await this.write_state(this.id, {
       ...config,
