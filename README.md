@@ -1,6 +1,6 @@
 # Chesser Born Again
 
-An improved chess game viewer/editor for [Obsidian](https://obsidian.md/) based on Chesser with persisted game history and mobile support
+An improved chess game viewer/editor for [Obsidian](https://obsidian.md/) based on [SilentVoid13/Chesser](https://github.com/SilentVoid13/Chesser) with persisted game history and mobile support
 
 ## Demonstration
 
