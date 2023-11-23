@@ -1,6 +1,6 @@
-# Chesser
+# Chesser Born Again
 
-A chess game viewer/editor for [Obsidian](https://obsidian.md/).
+An improved chess game viewer/editor for [Obsidian](https://obsidian.md/) based on Chesser with persisted game history and mobile support
 
 ## Demonstration
 
