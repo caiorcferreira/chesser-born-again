@@ -105,9 +105,9 @@ export class Chesser extends MarkdownRenderChild {
     // Save `id` into the codeblock yaml
     if (user_config.id === undefined) {
       this.app.workspace.onLayoutReady(() => {
-        window.setImmediate(() => {
+        window.setTimeout(() => {
           this.write_config({ id: this.id });
-        });
+        }, 0);
       });
 
       user_config.id = this.id;
