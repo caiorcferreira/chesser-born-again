@@ -21,8 +21,9 @@ import ChesserMenu from "./menu";
 
 // To bundle all css files in styles.css with rollup
 import "../assets/custom.css";
-import "chessground/assets/chessground.base.css";
-import "chessground/assets/chessground.brown.css";
+import "../assets/board-css/chessground.base.css";
+import "../assets/board-css/chessground.brown.css";
+
 // Piece styles
 import "../assets/piece-css/alpha.css";
 import "../assets/piece-css/california.css";
@@ -141,7 +142,6 @@ export class Chesser extends MarkdownRenderChild {
     try {
       this.cg = Chessground(containerEl.createDiv(), {
         fen: this.chess.fen(),
-        addDimensionsCssVars: true,
         lastMove,
         orientation: config.orientation as Color,
         viewOnly: config.viewOnly,
